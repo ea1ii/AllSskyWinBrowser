@@ -1,0 +1,64 @@
+﻿abcdefg = folder
+abcdefg: = file
+. = more items
+
+
+base_folder
+     |
+     +- yyyymmdd
+     |     |
+     |     +- meteors
+     |     |     |
+     |     |     +- Meteor image: meteors-yyyymmddhhmmss.jpg
+     |     |     +- Meteor marked image: meteors-yyyymmddhhmmss-marked.jpg
+     |     |     +- Meteor metadata: meteors-yyyymmddhhmmss.json
+     |     |     .
+     |     +- meteorsthumbnails
+     |     |     |
+     |     |     +- Meteor thumbnail: meteors-yyyymmddhhmmss.jpg
+     |     |     +- Meteor marked thumbnail: meteors-yyyymmddhhmmss-marked.jpg
+     |     |     .
+     |     | 
+     |     +- keogram
+     |     |     |
+     |     |     +- Keogram image: keogram-yyyymmdd.jpg
+     |     |
+     |     +- keogramthumbnail
+     |     |     |
+     |     |     +- Keogram thumbnail: keogram-yyyymmdd.jpg
+     |     |
+     |     +- keolapse
+     |     |     |
+     |     |     +- videothumbnail
+     |     |     |    |
+     |     |     |    +- Keolapse thumbnail: keolapse-yyyymmdd.mp4
+     |     |     |
+     |     |     +- Keolapse: keolapse-yyyymmdd.mp4
+     |     |
+     |     +- recap
+     |     |     |
+     |     |     +- Recap image: recap.jpg
+     |     |     +- Recap metadata: recap.json
+     |     |     +- Recap video: recap.mp4
+     |     |
+     |     +- startrailslapse/startrailsvideo
+     |     |     |
+     |     |     +- Startrails video: startrailsvideo-yyyymmdd.mp4
+     |     |
+     |     +- startrailsthumbnail
+     |     |     |
+     |     |     +- Startrails thumbnail: startrails-yyyymmdd.jpg
+     |     |
+     |     +- Day Timelapse: yyyymmdd-day.mp4
+     |     |
+     |     +- Night Timelapse: allsky-yyyymmdd.mp4
+     .
+
+     Keogram
+     Timelapse
+     Daylapse
+     Keolapse
+     Startrail
+     Traillapse
+     Meteors
+     Recap
