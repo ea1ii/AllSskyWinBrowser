@@ -500,7 +500,7 @@ Module MainModule
     Public Function FindNode(root As vTreeNode, dts As String, typeName As String) As vTreeNode
         Dim dt As DateTime
         If typeName = "Meteor" Then
-            dt = DateTime.ParseExact(dts, "yyyyMMddhhmmss", System.Globalization.CultureInfo.InvariantCulture)
+            dt = DateTime.ParseExact(dts, "yyyyMMddHHmmss", System.Globalization.CultureInfo.InvariantCulture)
         Else
             dt = DateTime.ParseExact(dts, "yyyyMMdd", System.Globalization.CultureInfo.InvariantCulture)
         End If

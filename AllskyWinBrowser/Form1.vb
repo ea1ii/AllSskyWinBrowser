@@ -371,10 +371,20 @@ Partial Class Form1
         ' Close any existing preview
         ClosePreview()
 
-        Dim img As Image =
-        If(Control.ModifierKeys = Keys.Control,
-           Image.FromFile(meta.MeteorMarkedImageThumbnailPath),
-           Image.FromFile(meta.MeteorImageThumbnailPath))
+        Dim img As Image
+        If Control.ModifierKeys = Keys.Control Then
+            'img = Image.FromFile(meta.MeteorMarkedImageThumbnailPath)
+            Using fs As New System.IO.FileStream(meta.MeteorMarkedImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                img = Image.FromStream(fs)
+                img = New Bitmap(img)
+            End Using
+        Else
+            'img = Image.FromFile(meta.MeteorImageThumbnailPath))Then
+            Using fs As New System.IO.FileStream(meta.MeteorImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                img = Image.FromStream(fs)
+                img = New Bitmap(img)
+            End Using
+        End If
 
         previewForm = CreatePreviewForm(img, meta.MeteorTime)
         previewForm.Show()
@@ -529,7 +539,11 @@ Partial Class Form1
                 Dim data = DirectCast(nightTimeLapseNode.Data, VideoImageNode)
                 pic.SizeMode = PictureBoxSizeMode.Zoom
                 If data.VideoImageThumbnailExists Then
-                    pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                        Dim img As Image = Image.FromStream(fs)
+                        pic.Image = New Bitmap(img)
+                    End Using
                 Else
                     pic.Image = ImageList1.Images("Video")
                 End If
@@ -551,7 +565,11 @@ Partial Class Form1
                 Dim data = DirectCast(dayTimelapseNode.Data, VideoImageNode)
                 pic.SizeMode = PictureBoxSizeMode.Zoom
                 If data.VideoImageThumbnailExists Then
-                    pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                        Dim img As Image = Image.FromStream(fs)
+                        pic.Image = New Bitmap(img)
+                    End Using
                 Else
                     pic.Image = ImageList1.Images("Video")
                 End If
@@ -573,7 +591,11 @@ Partial Class Form1
                 Dim data = DirectCast(keogramNode.Data, VideoImageNode)
                 pic.SizeMode = PictureBoxSizeMode.Zoom
                 If data.VideoImageThumbnailExists Then
-                    pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                        Dim img As Image = Image.FromStream(fs)
+                        pic.Image = New Bitmap(img)
+                    End Using
                 Else
                     pic.Image = ImageList1.Images("Image")
                 End If
@@ -595,7 +617,11 @@ Partial Class Form1
                 Dim data = DirectCast(keolapseNode.Data, VideoImageNode)
                 pic.SizeMode = PictureBoxSizeMode.Zoom
                 If data.VideoImageThumbnailExists Then
-                    pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                        Dim img As Image = Image.FromStream(fs)
+                        pic.Image = New Bitmap(img)
+                    End Using
                 Else
                     pic.Image = ImageList1.Images("Video")
                 End If
@@ -617,7 +643,11 @@ Partial Class Form1
                 Dim data = DirectCast(startrailNode.Data, VideoImageNode)
                 pic.SizeMode = PictureBoxSizeMode.Zoom
                 If data.VideoImageThumbnailExists Then
-                    pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                        Dim img As Image = Image.FromStream(fs)
+                        pic.Image = New Bitmap(img)
+                    End Using
                 Else
                     pic.Image = ImageList1.Images("Image")
                 End If
@@ -639,7 +669,11 @@ Partial Class Form1
                 Dim data = DirectCast(starlapseNode.Data, VideoImageNode)
                 pic.SizeMode = PictureBoxSizeMode.Zoom
                 If data.VideoImageThumbnailExists Then
-                    pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                        Dim img As Image = Image.FromStream(fs)
+                        pic.Image = New Bitmap(img)
+                    End Using
                 Else
                     pic.Image = ImageList1.Images("Video")
                 End If
@@ -666,7 +700,11 @@ Partial Class Form1
                 Dim data = DirectCast(recapNode.Data, RecapNode)
                 If data.RecapImageThumbnailExists Then
                     pic.SizeMode = PictureBoxSizeMode.Zoom
-                    pic.Image = Image.FromFile(data.RecapImageThumbnailPath)
+                    'pic.Image = Image.FromFile(data.RecapImageThumbnailPath)
+                    Using fs As New System.IO.FileStream(data.RecapImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                        Dim img As Image = Image.FromStream(fs)
+                        pic.Image = New Bitmap(img)
+                    End Using
                 Else
                     pic.Image = ImageList1.Images("Image")
                 End If
@@ -1040,36 +1078,46 @@ Partial Class Form1
                         Dim node As vTreeNode = FindNode(allSkyTree.Root, dateTimeString, suffix)
                         Dim meteorNode As MeteorNode = node.Data
                         If meteorNode IsNot Nothing Then
-                            If IO.File.Exists(meteorNode.MeteorImagePath) Then
-                                Try
-                                    IO.File.Delete(meteorNode.MeteorImagePath)
-                                Catch ex As Exception
-                                End Try
-                            End If
-                            If IO.File.Exists(meteorNode.MeteorMarkedImagePath) Then
-                                Try
-                                    IO.File.Delete(meteorNode.MeteorMarkedImagePath)
-                                Catch ex As Exception
-                                End Try
-                            End If
-                            If IO.File.Exists(meteorNode.MeteorMetadataPath) Then
-                                Try
-                                    IO.File.Delete(meteorNode.MeteorMetadataPath)
-                                Catch ex As Exception
-                                End Try
-                            End If
                             If IO.File.Exists(meteorNode.MeteorImageThumbnailPath) Then
                                 Try
                                     IO.File.Delete(meteorNode.MeteorImageThumbnailPath)
                                 Catch ex As Exception
+                                    MsgBox($"Error: Could not delete {meteorNode.MeteorImageThumbnailPath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
                                 End Try
                             End If
+
+                            If IO.File.Exists(meteorNode.MeteorImagePath) Then
+                                Try
+                                    IO.File.Delete(meteorNode.MeteorImagePath)
+                                Catch ex As Exception
+                                    MsgBox($"Error: Could not delete {meteorNode.MeteorImagePath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
+                                End Try
+                            End If
+
                             If IO.File.Exists(meteorNode.MeteorMarkedImageThumbnailPath) Then
                                 Try
                                     IO.File.Delete(meteorNode.MeteorMarkedImageThumbnailPath)
                                 Catch ex As Exception
+                                    MsgBox($"Error: Could not delete {meteorNode.MeteorMarkedImageThumbnailPath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
                                 End Try
                             End If
+
+                            If IO.File.Exists(meteorNode.MeteorMarkedImagePath) Then
+                                Try
+                                    IO.File.Delete(meteorNode.MeteorMarkedImagePath)
+                                Catch ex As Exception
+                                    MsgBox($"Error: Could not delete {meteorNode.MeteorMarkedImagePath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
+                                End Try
+                            End If
+
+                            If IO.File.Exists(meteorNode.MeteorMetadataPath) Then
+                                Try
+                                    IO.File.Delete(meteorNode.MeteorMetadataPath)
+                                Catch ex As Exception
+                                    MsgBox($"Error: Could not delete {meteorNode.MeteorMetadataPath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
+                                End Try
+                            End If
+
                         End If
                     Else
                         dt = DateTime.ParseExact(baseName, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)
@@ -1080,17 +1128,19 @@ Partial Class Form1
                         Else
                             Dim nodeVideoImage As VideoImageNode = node.Data
                             If nodeVideoImage IsNot Nothing Then
-                                If IO.File.Exists(nodeVideoImage.VideoImagePath) Then
-                                    Try
-                                        IO.File.Delete(nodeVideoImage.VideoImagePath)
-                                    Catch ex As Exception
-                                    End Try
-                                End If
                                 If IO.File.Exists(nodeVideoImage.VideoImageThumbnailPath) Then
                                     Try
                                         IO.File.Delete(nodeVideoImage.VideoImageThumbnailPath)
                                     Catch ex As Exception
-                                        MsgBox("err", MsgBoxStyle.OkOnly)
+                                        MsgBox($"Error: Could not delete {nodeVideoImage.VideoImageThumbnailPath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
+                                    End Try
+                                End If
+
+                                If IO.File.Exists(nodeVideoImage.VideoImagePath) Then
+                                    Try
+                                        IO.File.Delete(nodeVideoImage.VideoImagePath)
+                                    Catch ex As Exception
+                                        MsgBox($"Error: Could not delete {nodeVideoImage.VideoImagePath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
                                     End Try
                                 End If
                             End If
