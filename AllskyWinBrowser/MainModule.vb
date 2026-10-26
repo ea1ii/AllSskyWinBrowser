@@ -178,7 +178,7 @@ Module MainModule
 
             Dim thumbPath As String = ""
 
-
+#Region "Night Timelapse"
             'night timelapse
             filePath = CombinePaths(cfg.FullNightTimelapsePath.Replace("[D]", dayfolder), cfg.NightTimelapseMask.Replace("[D]", dayfolder))
             fileThumbPath = CombinePaths(cfg.FullNightTimelapseThumbnailPath.Replace("[D]", dayfolder), cfg.NightTimelapseThumbnailMask.Replace("[D]", dayfolder))
@@ -208,7 +208,9 @@ Module MainModule
                 End If
                 validIds.Add(scoreId)
             End If
+#End Region
 
+#Region "Day Timelapse"
             'day timelapse
             filePath = CombinePaths(cfg.FullDayTimelapsePath.Replace("[D]", dayfolder), cfg.DayTimelapseMask.Replace("[D]", dayfolder))
             fileThumbPath = CombinePaths(cfg.FullDayTimelapseThumbnailPath.Replace("[D]", dayfolder), cfg.DayTimelapseThumbnailMask.Replace("[D]", dayfolder))
@@ -237,7 +239,9 @@ Module MainModule
                 End If
                 validIds.Add(scoreId)
             End If
+#End Region
 
+#Region "Keogram"
             'keogram
             filePath = CombinePaths(cfg.FullKeogramPath.Replace("[D]", dayfolder), cfg.KeogramMask.Replace("[D]", dayfolder))
             fileThumbPath = CombinePaths(cfg.FullKeogramThumbnailPath.Replace("[D]", dayfolder), cfg.KeogramThumbnailMask.Replace("[D]", dayfolder))
@@ -269,7 +273,9 @@ Module MainModule
                 End If
                 validIds.Add(scoreId)
             End If
+#End Region
 
+#Region "Keolapse"
             'keolapse
             filePath = CombinePaths(cfg.FullKeolapsePath.Replace("[D]", dayfolder), cfg.KeolapseMask.Replace("[D]", dayfolder))
             fileThumbPath = CombinePaths(cfg.FullKeolapseThumbnailPath.Replace("[D]", dayfolder), cfg.KeolapseThumbnailMask.Replace("[D]", dayfolder))
@@ -298,7 +304,9 @@ Module MainModule
                 End If
                 validIds.Add(scoreId)
             End If
+#End Region
 
+#Region "Startrail"
             'startrail
             filePath = CombinePaths(cfg.FullStartrailPath.Replace("[D]", dayfolder), cfg.StartrailMask.Replace("[D]", dayfolder))
             fileThumbPath = CombinePaths(cfg.FullStartrailThumbnailPath.Replace("[D]", dayfolder), cfg.StartrailMask.Replace("[D]", dayfolder))
@@ -330,7 +338,9 @@ Module MainModule
                 End If
                 validIds.Add(scoreId)
             End If
+#End Region
 
+#Region "Startrail Timelapse"
             'startrail timelapse
             filePath = CombinePaths(cfg.FullStartraillapsePath.Replace("[D]", dayfolder), cfg.StartraillapseMask.Replace("[D]", dayfolder))
             fileThumbPath = CombinePaths(cfg.FullStartraillapseThumbnailPath.Replace("[D]", dayfolder), cfg.StartraillapseThumbnailMask.Replace("[D]", dayfolder))
@@ -359,7 +369,9 @@ Module MainModule
                 End If
                 validIds.Add(scoreId)
             End If
+#End Region
 
+#Region "Recap"
             'recap
             Dim imagePath As String = CombinePaths(cfg.FullRecapPath.Replace("[D]", dayfolder), cfg.RecapImageMask.Replace("[D]", dayfolder))
             Dim videoPath As String = CombinePaths(cfg.FullRecapPath.Replace("[D]", dayfolder), cfg.RecapVideoMask.Replace("[D]", dayfolder))
@@ -396,7 +408,9 @@ Module MainModule
                 End If
                 validIds.Add(scoreId)
             End If
+#End Region
 
+#Region "Search for Meteors"
             ' search for meteors in the day folder
 
             If IO.Directory.Exists(cfg.FullMeteorPath.Replace("[D]", dayfolder)) Then
@@ -404,6 +418,13 @@ Module MainModule
                 Dim meteorFiles = System.IO.Directory.GetFiles(cfg.FullMeteorPath.Replace("[D]", dayfolder), cfg.MeteorMask.Replace("[DT]", dayfolder + "*")).ToList
                 'remove any meteor files that do not have a valid datetime in the filename
                 meteorFiles.RemoveAll(Function(f) Not ValidDateTime(f))
+                Dim tomorrow As Date
+                Date.TryParseExact(dayfolder, "yyyyMMdd", Globalization.CultureInfo.InvariantCulture, Globalization.DateTimeStyles.None, tomorrow)
+                tomorrow = tomorrow.AddDays(1)
+                Dim tomorrowStr As String = tomorrow.ToString("yyyyMMdd")
+                Dim meteorFilesTomorrow = System.IO.Directory.GetFiles(cfg.FullMeteorPath.Replace("[D]", dayfolder), cfg.MeteorMask.Replace("[DT]", tomorrowStr + "*")).ToList
+                meteorFilesTomorrow.RemoveAll(Function(f) Not ValidDateTime(f))
+                meteorFiles.AddRange(meteorFilesTomorrow)
 
                 'add meteor files to the tree
                 For Each meteorFile In meteorFiles
@@ -444,6 +465,8 @@ Module MainModule
                     validIds.Add(scoreId)
                 Next
             End If
+#End Region
+
         Next
 
         'remove any scores that are not in the validIds list

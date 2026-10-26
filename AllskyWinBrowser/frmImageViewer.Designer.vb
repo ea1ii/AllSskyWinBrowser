@@ -31,6 +31,7 @@ Partial Class ImageViewer
         tsbZoomActual = New ToolStripButton()
         tsbZoomReset = New ToolStripButton()
         tsbExit = New ToolStripButton()
+        tsbMeteor = New ToolStripButton()
         StatusStrip1 = New StatusStrip()
         tsslblCoords = New ToolStripStatusLabel()
         ToolStrip1.SuspendLayout()
@@ -51,10 +52,10 @@ Partial Class ImageViewer
         ' ToolStrip1
         ' 
         ToolStrip1.ImageScalingSize = New Size(24, 24)
-        ToolStrip1.Items.AddRange(New ToolStripItem() {tsbZoomIn, tsbZoomOut, tsbZoomActual, tsbZoomReset, tsbExit})
+        ToolStrip1.Items.AddRange(New ToolStripItem() {tsbZoomIn, tsbZoomOut, tsbZoomActual, tsbZoomReset, tsbExit, tsbMeteor})
         ToolStrip1.Location = New Point(0, 0)
         ToolStrip1.Name = "ToolStrip1"
-        ToolStrip1.Size = New Size(1773, 33)
+        ToolStrip1.Size = New Size(1773, 34)
         ToolStrip1.TabIndex = 0
         ToolStrip1.Text = "ToolStrip1"
         ' 
@@ -64,7 +65,7 @@ Partial Class ImageViewer
         tsbZoomIn.Image = CType(resources.GetObject("tsbZoomIn.Image"), Image)
         tsbZoomIn.ImageTransparentColor = Color.Magenta
         tsbZoomIn.Name = "tsbZoomIn"
-        tsbZoomIn.Size = New Size(34, 28)
+        tsbZoomIn.Size = New Size(34, 29)
         tsbZoomIn.Text = "ToolStripButton1"
         ' 
         ' tsbZoomOut
@@ -73,7 +74,7 @@ Partial Class ImageViewer
         tsbZoomOut.Image = CType(resources.GetObject("tsbZoomOut.Image"), Image)
         tsbZoomOut.ImageTransparentColor = Color.Magenta
         tsbZoomOut.Name = "tsbZoomOut"
-        tsbZoomOut.Size = New Size(34, 28)
+        tsbZoomOut.Size = New Size(34, 29)
         tsbZoomOut.Text = "ToolStripButton2"
         ' 
         ' tsbZoomActual
@@ -82,7 +83,7 @@ Partial Class ImageViewer
         tsbZoomActual.Image = CType(resources.GetObject("tsbZoomActual.Image"), Image)
         tsbZoomActual.ImageTransparentColor = Color.Magenta
         tsbZoomActual.Name = "tsbZoomActual"
-        tsbZoomActual.Size = New Size(34, 28)
+        tsbZoomActual.Size = New Size(34, 29)
         tsbZoomActual.Text = "ToolStripButton3"
         ' 
         ' tsbZoomReset
@@ -91,7 +92,7 @@ Partial Class ImageViewer
         tsbZoomReset.Image = CType(resources.GetObject("tsbZoomReset.Image"), Image)
         tsbZoomReset.ImageTransparentColor = Color.Magenta
         tsbZoomReset.Name = "tsbZoomReset"
-        tsbZoomReset.Size = New Size(34, 28)
+        tsbZoomReset.Size = New Size(34, 29)
         tsbZoomReset.Text = "ToolStripButton4"
         ' 
         ' tsbExit
@@ -101,8 +102,18 @@ Partial Class ImageViewer
         tsbExit.Image = CType(resources.GetObject("tsbExit.Image"), Image)
         tsbExit.ImageTransparentColor = Color.Magenta
         tsbExit.Name = "tsbExit"
-        tsbExit.Size = New Size(34, 28)
+        tsbExit.Size = New Size(34, 29)
         tsbExit.Text = "ToolStripButton5"
+        ' 
+        ' tsbMeteor
+        ' 
+        tsbMeteor.DisplayStyle = ToolStripItemDisplayStyle.Text
+        tsbMeteor.Image = CType(resources.GetObject("tsbMeteor.Image"), Image)
+        tsbMeteor.ImageTransparentColor = Color.Magenta
+        tsbMeteor.Name = "tsbMeteor"
+        tsbMeteor.Size = New Size(81, 29)
+        tsbMeteor.Text = "Meteors"
+        tsbMeteor.Visible = False
         ' 
         ' StatusStrip1
         ' 
@@ -152,4 +163,5 @@ Partial Class ImageViewer
     Friend WithEvents tsbExit As ToolStripButton
     Friend WithEvents StatusStrip1 As StatusStrip
     Friend WithEvents tsslblCoords As ToolStripStatusLabel
+    Friend WithEvents tsbMeteor As ToolStripButton
 End Class

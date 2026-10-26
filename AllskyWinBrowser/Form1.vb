@@ -424,13 +424,13 @@ Partial Class Form1
         Dim meta = DirectCast(tag.MeteorNode, MeteorNode)
 
         If Control.ModifierKeys = Keys.Control Then
-            Dim viewer As New ImageViewer(meta.MeteorMarkedImagePath)
+            Dim viewer As New ImageViewer(meta.MeteorMarkedImagePath, meta.MeteorMetadataPath)
             viewer.ShowDialog()
         ElseIf Control.ModifierKeys = Keys.Shift Then
             Dim viewer As New frmMetadata(meta.MeteorMetadataPath)
             viewer.ShowDialog()
         Else
-            Dim viewer As New ImageViewer(meta.MeteorImagePath)
+            Dim viewer As New ImageViewer(meta.MeteorImagePath, meta.MeteorMetadataPath)
             viewer.ShowDialog()
         End If
     End Sub
@@ -781,7 +781,7 @@ Partial Class Form1
     ''' </summary>
     ''' <param name="sender"></param>
     ''' <param name="e"></param>
-    Private Async Sub Form1_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
+    Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles MyBase.Shown
         PopulateGridHeader()
         ToolStripStatusLabel1.Text = "Building Tree"
         Me.Refresh()
