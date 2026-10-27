@@ -23,6 +23,11 @@
     Public Property KeogramThumbnailPath As String
     Public Property KeogramThumbnailMask As String
 
+    Public Property DayKeogramPath As String
+    Public Property DayKeogramMask As String
+    Public Property DayKeogramThumbnailPath As String
+    Public Property DayKeogramThumbnailMask As String
+
     Public Property KeolapsePath As String
     Public Property KeolapseMask As String
     Public Property KeolapseThumbnailPath As String
@@ -71,6 +76,9 @@
     Public Property FullKeogramPath As String
     Public Property FullKeogramThumbnailPath As String
 
+    Public Property FullDayKeogramPath As String
+    Public Property FullDayKeogramThumbnailPath As String
+
     Public Property FullKeolapsePath As String
     Public Property FullKeolapseThumbnailPath As String
 
@@ -109,6 +117,10 @@
             .KeogramMask = My.Settings.KeogramMask,
             .KeogramThumbnailPath = My.Settings.KeogramThumbnailPath,
             .KeogramThumbnailMask = My.Settings.KeogramThumbnailMask,
+            .DayKeogramPath = My.Settings.DayKeogramPath,
+            .DayKeogramMask = My.Settings.DayKeogramMask,
+            .DayKeogramThumbnailPath = My.Settings.DayKeogramThumbnailPath,
+            .DayKeogramThumbnailMask = My.Settings.DayKeogramThumbnailMask,
             .KeolapsePath = My.Settings.KeolapsePath,
             .KeolapseMask = My.Settings.KeolapseMask,
             .KeolapseThumbnailPath = My.Settings.KeolapseThumbnailPath,
@@ -159,6 +171,11 @@
         KeogramMask = My.Settings.KeogramMask
         KeogramThumbnailPath = My.Settings.KeogramThumbnailPath
         KeogramThumbnailMask = My.Settings.KeogramThumbnailMask
+
+        DayKeogramPath = My.Settings.DayKeogramPath
+        DayKeogramMask = My.Settings.DayKeogramMask
+        DayKeogramThumbnailPath = My.Settings.DayKeogramThumbnailPath
+        DayKeogramThumbnailMask = My.Settings.DayKeogramThumbnailMask
 
         KeolapsePath = My.Settings.KeolapsePath
         KeolapseMask = My.Settings.KeolapseMask
@@ -224,6 +241,11 @@
             .KeogramThumbnailPath = KeogramThumbnailPath
             .KeogramThumbnailMask = KeogramThumbnailMask
 
+            .DayKeogramPath = DayKeogramPath
+            .DayKeogramMask = DayKeogramMask
+            .DayKeogramThumbnailPath = DayKeogramThumbnailPath
+            .DayKeogramThumbnailMask = DayKeogramThumbnailMask
+
             .KeolapsePath = KeolapsePath
             .KeolapseMask = KeolapseMask
             .KeolapseThumbnailPath = KeolapseThumbnailPath
@@ -276,6 +298,8 @@
             FullNightTimelapseThumbnailPath = CombinePaths(FullDayFolderPath, NightTimelapseThumbnailPath)
             FullKeogramPath = CombinePaths(FullDayFolderPath, KeogramPath)
             FullKeogramThumbnailPath = CombinePaths(FullDayFolderPath, KeogramThumbnailPath)
+            FullDayKeogramPath = CombinePaths(FullDayFolderPath, DayKeogramPath)
+            FullDayKeogramThumbnailPath = CombinePaths(FullDayFolderPath, DayKeogramThumbnailPath)
             FullKeolapsePath = CombinePaths(FullDayFolderPath, KeolapsePath)
             FullKeolapseThumbnailPath = CombinePaths(FullDayFolderPath, KeolapseThumbnailPath)
             FullStartrailPath = CombinePaths(FullDayFolderPath, StartrailPath)

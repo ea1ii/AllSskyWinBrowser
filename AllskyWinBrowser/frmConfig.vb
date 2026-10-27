@@ -50,6 +50,11 @@
         Me.txtbKeogramThumbnailPath.Text = _cfg.KeogramThumbnailPath
         Me.txtbKeogramThumbnailMask.Text = _cfg.KeogramThumbnailMask
 
+        Me.txtbDayKeogramPath.Text = _cfg.DayKeogramPath
+        Me.txtbDayKeogramMask.Text = _cfg.DayKeogramMask
+        Me.txtbDayKeogramThumbnailPath.Text = _cfg.DayKeogramThumbnailPath
+        Me.txtbDayKeogramThumbnailMask.Text = _cfg.DayKeogramThumbnailMask
+
         Me.txtbKeolapsePath.Text = _cfg.KeolapsePath
         Me.txtbKeolapseMask.Text = _cfg.KeolapseMask
         Me.txtbKeolapseThumbnailPath.Text = _cfg.KeolapseThumbnailPath
@@ -108,6 +113,11 @@
         _cfg.KeogramMask = Me.txtbKeogramMask.Text
         _cfg.KeogramThumbnailPath = Me.txtbKeogramThumbnailPath.Text
         _cfg.KeogramThumbnailMask = Me.txtbKeogramThumbnailMask.Text
+
+        _cfg.DayKeogramPath = Me.txtbDayKeogramPath.Text
+        _cfg.DayKeogramMask = Me.txtbDayKeogramMask.Text
+        _cfg.DayKeogramThumbnailPath = Me.txtbDayKeogramThumbnailPath.Text
+        _cfg.DayKeogramThumbnailMask = Me.txtbDayKeogramThumbnailMask.Text
 
         _cfg.KeolapsePath = Me.txtbKeolapsePath.Text
         _cfg.KeolapseMask = Me.txtbKeolapseMask.Text

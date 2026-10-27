@@ -42,11 +42,12 @@ Partial Class Form1
             .Add(New Label With {.Text = "Nightlapse", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 1, 0)
             .Add(New Label With {.Text = "Daylapse", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 2, 0)
             .Add(New Label With {.Text = "Keogram", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 3, 0)
-            .Add(New Label With {.Text = "Keolapse", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 4, 0)
-            .Add(New Label With {.Text = "Startrail", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 5, 0)
-            .Add(New Label With {.Text = "Starlapse", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 6, 0)
-            .Add(New Label With {.Text = "Recap", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 7, 0)
-            .Add(New Label With {.Text = "Meteors", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 8, 0)
+            .Add(New Label With {.Text = "Day keogram", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 4, 0)
+            .Add(New Label With {.Text = "Keolapse", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 5, 0)
+            .Add(New Label With {.Text = "Startrail", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 6, 0)
+            .Add(New Label With {.Text = "Starlapse", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 7, 0)
+            .Add(New Label With {.Text = "Recap", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 8, 0)
+            .Add(New Label With {.Text = "Meteors", .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter}, 9, 0)
         End With
 
     End Sub
@@ -173,6 +174,22 @@ Partial Class Form1
                         keogram = "No"
                     End If
 
+                    ' Daykeogram
+                    Dim daykeogram As String
+                    Dim daykeogramNode = daylyNode.GetChild(Of VideoImageNode)(Function(n) n.Type = VideoImageType.DayKeogram)
+                    Dim daykeogramFull As String = Nothing
+                    If daykeogramNode IsNot Nothing Then
+                        Dim data = DirectCast(daykeogramNode.Data, VideoImageNode)
+                        If data.VideoImageThumbnailExists Then
+                            daykeogram = data.VideoImageThumbnailPath
+                        Else
+                            daykeogram = "Yes"
+                        End If
+                        daykeogramFull = data.VideoImagePath
+                    Else
+                        daykeogram = "No"
+                    End If
+
                     ' Keolapse
                     Dim keolapse As String
                     Dim keolapseNode = daylyNode.GetChild(Of VideoImageNode)(Function(n) n.Type = VideoImageType.Keolapse)
@@ -241,7 +258,7 @@ Partial Class Form1
                         recap = "No"
                     End If
 
-                    AddGridRow(dateString, nightNode, dayNode, keogramNode, keolapseNode, startrailNode, starlapseNode, recapNode, daylyNode)
+                    AddGridRow(dateString, nightNode, dayNode, keogramNode, daykeogramNode, keolapseNode, startrailNode, starlapseNode, recapNode, daylyNode)
 
                     UpdateProgress(ToolStripProgressBar1.Value + 1)
                 Next
@@ -375,14 +392,16 @@ Partial Class Form1
         If Control.ModifierKeys = Keys.Control Then
             'img = Image.FromFile(meta.MeteorMarkedImageThumbnailPath)
             Using fs As New System.IO.FileStream(meta.MeteorMarkedImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
-                img = Image.FromStream(fs)
-                img = New Bitmap(img)
+                Using tmp As Image = Image.FromStream(fs)
+                    img = New Bitmap(tmp)
+                End Using
             End Using
         Else
             'img = Image.FromFile(meta.MeteorImageThumbnailPath))Then
             Using fs As New System.IO.FileStream(meta.MeteorImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
-                img = Image.FromStream(fs)
-                img = New Bitmap(img)
+                Using tmp As Image = Image.FromStream(fs)
+                    img = New Bitmap(tmp)
+                End Using
             End Using
         End If
 
@@ -457,8 +476,8 @@ Partial Class Form1
             }
         }
         Dim score = ScoreManager.GetScore(lbl.Tag.ItemId)
-        Dim scoreStr As String = New String("·"c, score)
-        lbl.Text &= " " & scoreStr
+        Dim scoreStr As String = New String("*"c, score)
+        lbl.Text &= " " & scoreStr & vbCrLf & meta.MeteorTime.Insert(2, ":").Insert(5, ":")
 
         AddHandler lbl.MouseClick, AddressOf MeteorIcon_MouseClick
         AddHandler lbl.MouseEnter, AddressOf MeteorIcon_MouseEnter
@@ -496,8 +515,9 @@ Partial Class Form1
             If newScore <> currentScore Then
                 ScoreManager.SetScore(itemId, newScore)
                 ' Refresh the PictureBox to trigger repaint and show updated score
-                Dim txt As String = DirectCast(sender, Label).Text.Substring(0, 2)
-                txt &= " " & New String("·"c, newScore)
+                'Dim txt As String = DirectCast(sender, Label).Text.Substring(0, 2)
+                Dim txt As String = DirectCast(sender, Label).Text.Replace("*", "") ' Remove existing score symbols
+                txt = txt.Insert(3, New String("*"c, newScore))
                 DirectCast(sender, Label).Text = txt
             End If
         End If
@@ -515,18 +535,23 @@ Partial Class Form1
     ''' <param name="starlapseNode"></param>
     ''' <param name="recapNode"></param>
     ''' <param name="day">day node containing meteor children</param> 
-    Private Sub AddGridRow(dateString As String, nightTimeLapseNode As vTreeNode, dayTimelapseNode As vTreeNode, keogramNode As vTreeNode, keolapseNode As vTreeNode, startrailNode As vTreeNode, starlapseNode As vTreeNode, recapNode As vTreeNode, day As vTreeNode)
+    Private Sub AddGridRow(dateString As String, nightTimeLapseNode As vTreeNode, dayTimelapseNode As vTreeNode, keogramNode As vTreeNode, dayKeogramNode As vTreeNode, keolapseNode As vTreeNode, startrailNode As vTreeNode, starlapseNode As vTreeNode, recapNode As vTreeNode, day As vTreeNode)
         Dim rowIndex = TableLayoutPanel1.RowCount
+
         TableLayoutPanel1.RowCount += 1
         TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.AutoSize))
         Dim pic As PictureBox
         Dim metaPic As PictureBox
         With TableLayoutPanel1.Controls
-            .Add(New Label With {.Text = DateTime.Parse(dateString).ToString("yyyy-MMM-d"), .Dock = DockStyle.Fill, .TextAlign = ContentAlignment.MiddleCenter,
-                 .Tag = New RowMeta With {
-                 .Year = dateString.Split("-")(0),
-                 .Month = dateString.Split("-")(1),
-                 .Day = dateString.Split("-")(2)
+            .Add(New Label With {
+                 .Text = DateTime.Parse(dateString).ToString("yyyy-MMM-d"),
+                 .Dock = DockStyle.Fill,
+                 .Font = New Font("Segoe UI", 10, FontStyle.Bold),
+                 .TextAlign = ContentAlignment.MiddleCenter,
+                    .Tag = New RowMeta With {
+                    .Year = dateString.Split("-")(0),
+                    .Month = dateString.Split("-")(1),
+                    .Day = dateString.Split("-")(2)
                  }
             }, 0, rowIndex)
 
@@ -537,12 +562,13 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If nightTimeLapseNode IsNot Nothing Then
                 Dim data = DirectCast(nightTimeLapseNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.Zoom
+                pic.SizeMode = PictureBoxSizeMode.CenterImage
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
-                        Dim img As Image = Image.FromStream(fs)
-                        pic.Image = New Bitmap(img)
+                        Using tmp As Image = Image.FromStream(fs)
+                            pic.Image = New Bitmap(tmp)
+                        End Using
                     End Using
                 Else
                     pic.Image = ImageList1.Images("Video")
@@ -563,12 +589,13 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If dayTimelapseNode IsNot Nothing Then
                 Dim data = DirectCast(dayTimelapseNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.Zoom
+                pic.SizeMode = PictureBoxSizeMode.CenterImage
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
-                        Dim img As Image = Image.FromStream(fs)
-                        pic.Image = New Bitmap(img)
+                        Using tmp As Image = Image.FromStream(fs)
+                            pic.Image = New Bitmap(tmp)
+                        End Using
                     End Using
                 Else
                     pic.Image = ImageList1.Images("Video")
@@ -589,12 +616,13 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If keogramNode IsNot Nothing Then
                 Dim data = DirectCast(keogramNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.Zoom
+                pic.SizeMode = PictureBoxSizeMode.CenterImage
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
-                        Dim img As Image = Image.FromStream(fs)
-                        pic.Image = New Bitmap(img)
+                        Using tmp As Image = Image.FromStream(fs)
+                            pic.Image = New Bitmap(tmp)
+                        End Using
                     End Using
                 Else
                     pic.Image = ImageList1.Images("Image")
@@ -610,43 +638,18 @@ Partial Class Form1
             AddHandler pic.MouseDown, AddressOf PictureBox_ClickScore
             .Add(pic, 3, rowIndex)
 
-            ' Keolapse
+            ' Daykeogram
             pic = New PictureBox With {.Dock = DockStyle.Fill, .SizeMode = PictureBoxSizeMode.CenterImage}
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
-            If keolapseNode IsNot Nothing Then
-                Dim data = DirectCast(keolapseNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.Zoom
+            If dayKeogramNode IsNot Nothing Then
+                Dim data = DirectCast(dayKeogramNode.Data, VideoImageNode)
+                pic.SizeMode = PictureBoxSizeMode.CenterImage
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
-                        Dim img As Image = Image.FromStream(fs)
-                        pic.Image = New Bitmap(img)
-                    End Using
-                Else
-                    pic.Image = ImageList1.Images("Video")
-                End If
-                pic.Tag = New PicTag With {
-                    .Path = data.VideoImagePath,
-                    .ItemId = $"{dateString}-{data.Type}"
-                    }
-            Else
-                pic.Image = ImageList1.Images("Empty")
-            End If
-            AddHandler pic.DoubleClick, AddressOf IconDoubleClick
-            AddHandler pic.MouseDown, AddressOf PictureBox_ClickScore
-            .Add(pic, 4, rowIndex)
-
-            ' Startrail
-            pic = New PictureBox With {.Dock = DockStyle.Fill, .SizeMode = PictureBoxSizeMode.CenterImage}
-            AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
-            If startrailNode IsNot Nothing Then
-                Dim data = DirectCast(startrailNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.Zoom
-                If data.VideoImageThumbnailExists Then
-                    'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
-                    Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
-                        Dim img As Image = Image.FromStream(fs)
-                        pic.Image = New Bitmap(img)
+                        Using tmp As Image = Image.FromStream(fs)
+                            pic.Image = New Bitmap(tmp)
+                        End Using
                     End Using
                 Else
                     pic.Image = ImageList1.Images("Image")
@@ -660,19 +663,20 @@ Partial Class Form1
             End If
             AddHandler pic.DoubleClick, AddressOf IconDoubleClick
             AddHandler pic.MouseDown, AddressOf PictureBox_ClickScore
-            .Add(pic, 5, rowIndex)
+            .Add(pic, 4, rowIndex)
 
-            ' Starlapse
+            ' Keolapse
             pic = New PictureBox With {.Dock = DockStyle.Fill, .SizeMode = PictureBoxSizeMode.CenterImage}
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
-            If starlapseNode IsNot Nothing Then
-                Dim data = DirectCast(starlapseNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.Zoom
+            If keolapseNode IsNot Nothing Then
+                Dim data = DirectCast(keolapseNode.Data, VideoImageNode)
+                pic.SizeMode = PictureBoxSizeMode.CenterImage
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
-                        Dim img As Image = Image.FromStream(fs)
-                        pic.Image = New Bitmap(img)
+                        Using tmp As Image = Image.FromStream(fs)
+                            pic.Image = New Bitmap(tmp)
+                        End Using
                     End Using
                 Else
                     pic.Image = ImageList1.Images("Video")
@@ -686,7 +690,61 @@ Partial Class Form1
             End If
             AddHandler pic.DoubleClick, AddressOf IconDoubleClick
             AddHandler pic.MouseDown, AddressOf PictureBox_ClickScore
+            .Add(pic, 5, rowIndex)
+
+            ' Startrail
+            pic = New PictureBox With {.Dock = DockStyle.Fill, .SizeMode = PictureBoxSizeMode.CenterImage}
+            AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
+            If startrailNode IsNot Nothing Then
+                Dim data = DirectCast(startrailNode.Data, VideoImageNode)
+                pic.SizeMode = PictureBoxSizeMode.CenterImage
+                If data.VideoImageThumbnailExists Then
+                    'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                        Using tmp As Image = Image.FromStream(fs)
+                            pic.Image = New Bitmap(tmp)
+                        End Using
+                    End Using
+                Else
+                    pic.Image = ImageList1.Images("Image")
+                End If
+                pic.Tag = New PicTag With {
+                    .Path = data.VideoImagePath,
+                    .ItemId = $"{dateString}-{data.Type}"
+                    }
+            Else
+                pic.Image = ImageList1.Images("Empty")
+            End If
+            AddHandler pic.DoubleClick, AddressOf IconDoubleClick
+            AddHandler pic.MouseDown, AddressOf PictureBox_ClickScore
             .Add(pic, 6, rowIndex)
+
+            ' Starlapse
+            pic = New PictureBox With {.Dock = DockStyle.Fill, .SizeMode = PictureBoxSizeMode.CenterImage}
+            AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
+            If starlapseNode IsNot Nothing Then
+                Dim data = DirectCast(starlapseNode.Data, VideoImageNode)
+                pic.SizeMode = PictureBoxSizeMode.CenterImage
+                If data.VideoImageThumbnailExists Then
+                    'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
+                    Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
+                        Using tmp As Image = Image.FromStream(fs)
+                            pic.Image = New Bitmap(tmp)
+                        End Using
+                    End Using
+                Else
+                    pic.Image = ImageList1.Images("Video")
+                End If
+                pic.Tag = New PicTag With {
+                    .Path = data.VideoImagePath,
+                    .ItemId = $"{dateString}-{data.Type}"
+                    }
+            Else
+                pic.Image = ImageList1.Images("Empty")
+            End If
+            AddHandler pic.DoubleClick, AddressOf IconDoubleClick
+            AddHandler pic.MouseDown, AddressOf PictureBox_ClickScore
+            .Add(pic, 7, rowIndex)
 
             ' Recap
             Dim tblPan As New TableLayoutPanel With {.Dock = DockStyle.Fill, .AutoSize = True, .RowCount = 1, .ColumnCount = 2}
@@ -699,11 +757,12 @@ Partial Class Form1
             If recapNode IsNot Nothing Then
                 Dim data = DirectCast(recapNode.Data, RecapNode)
                 If data.RecapImageThumbnailExists Then
-                    pic.SizeMode = PictureBoxSizeMode.Zoom
+                    pic.SizeMode = PictureBoxSizeMode.CenterImage
                     'pic.Image = Image.FromFile(data.RecapImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.RecapImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
-                        Dim img As Image = Image.FromStream(fs)
-                        pic.Image = New Bitmap(img)
+                        Using tmp As Image = Image.FromStream(fs)
+                            pic.Image = New Bitmap(tmp)
+                        End Using
                     End Using
                 Else
                     pic.Image = ImageList1.Images("Image")
@@ -731,14 +790,15 @@ Partial Class Form1
             Else
                 pic.Image = ImageList1.Images("Empty")
             End If
-            .Add(tblPan, 7, rowIndex)
+            .Add(tblPan, 8, rowIndex)
 
             ' Meteors
             Dim panel As New FlowLayoutPanel With {
                 .FlowDirection = FlowDirection.LeftToRight,
                 .WrapContents = True,
-                .AutoSize = True,
+                .AutoSize = False,
                 .AutoSizeMode = AutoSizeMode.GrowAndShrink,
+                .Dock = DockStyle.Fill,
                 .Margin = New Padding(0),
                 .Padding = New Padding(0)
             }
@@ -750,7 +810,7 @@ Partial Class Form1
                 panel.Controls.Add(lbl)
             Next
 
-            .Add(panel, 8, rowIndex)
+            .Add(panel, 9, rowIndex)
 
         End With
     End Sub

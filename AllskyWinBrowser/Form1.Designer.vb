@@ -38,13 +38,13 @@ Partial Class Form1
         tsbSetup = New ToolStripButton()
         tsbExit = New ToolStripButton()
         ToolStripButton1 = New ToolStripButton()
+        tsbPurge = New ToolStripButton()
         TreeView1 = New TreeView()
         TableLayoutPanel1 = New TableLayoutPanel()
         Panel1 = New Panel()
         Panel4 = New Panel()
         Panel2 = New Panel()
         tlpHeader = New TableLayoutPanel()
-        tsbPurge = New ToolStripButton()
         StatusStrip1.SuspendLayout()
         ToolStrip1.SuspendLayout()
         Panel1.SuspendLayout()
@@ -162,9 +162,18 @@ Partial Class Form1
         ToolStripButton1.Size = New Size(94, 29)
         ToolStripButton1.Text = "Reload"
         ' 
+        ' tsbPurge
+        ' 
+        tsbPurge.Image = CType(resources.GetObject("tsbPurge.Image"), Image)
+        tsbPurge.ImageTransparentColor = Color.Magenta
+        tsbPurge.Name = "tsbPurge"
+        tsbPurge.Size = New Size(86, 29)
+        tsbPurge.Text = "Purge"
+        ' 
         ' TreeView1
         ' 
         TreeView1.Dock = DockStyle.Left
+        TreeView1.Font = New Font("Segoe UI", 10F, FontStyle.Regular, GraphicsUnit.Point, CByte(0))
         TreeView1.Location = New Point(0, 34)
         TreeView1.Name = "TreeView1"
         TreeView1.Size = New Size(233, 1120)
@@ -175,7 +184,7 @@ Partial Class Form1
         TableLayoutPanel1.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
         TableLayoutPanel1.AutoSize = True
         TableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink
-        TableLayoutPanel1.ColumnCount = 9
+        TableLayoutPanel1.ColumnCount = 10
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
@@ -185,11 +194,11 @@ Partial Class Form1
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
         TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle())
+        TableLayoutPanel1.ColumnStyles.Add(New ColumnStyle(SizeType.Percent, 100F))
         TableLayoutPanel1.Location = New Point(3, 3)
         TableLayoutPanel1.Name = "TableLayoutPanel1"
         TableLayoutPanel1.RowCount = 1
         TableLayoutPanel1.RowStyles.Add(New RowStyle())
-        TableLayoutPanel1.RowStyles.Add(New RowStyle(SizeType.Absolute, 20F))
         TableLayoutPanel1.Size = New Size(0, 0)
         TableLayoutPanel1.TabIndex = 7
         ' 
@@ -230,7 +239,8 @@ Partial Class Form1
         ' 
         tlpHeader.Anchor = AnchorStyles.Top Or AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Right
         tlpHeader.CellBorderStyle = TableLayoutPanelCellBorderStyle.Outset
-        tlpHeader.ColumnCount = 9
+        tlpHeader.ColumnCount = 10
+        tlpHeader.ColumnStyles.Add(New ColumnStyle())
         tlpHeader.ColumnStyles.Add(New ColumnStyle())
         tlpHeader.ColumnStyles.Add(New ColumnStyle())
         tlpHeader.ColumnStyles.Add(New ColumnStyle())
@@ -246,14 +256,6 @@ Partial Class Form1
         tlpHeader.RowStyles.Add(New RowStyle(SizeType.Percent, 100F))
         tlpHeader.Size = New Size(2121, 65)
         tlpHeader.TabIndex = 0
-        ' 
-        ' tsbPurge
-        ' 
-        tsbPurge.Image = CType(resources.GetObject("tsbPurge.Image"), Image)
-        tsbPurge.ImageTransparentColor = Color.Magenta
-        tsbPurge.Name = "tsbPurge"
-        tsbPurge.Size = New Size(86, 29)
-        tsbPurge.Text = "Purge"
         ' 
         ' Form1
         ' 

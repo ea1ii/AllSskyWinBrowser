@@ -689,6 +689,54 @@ Namespace My
                 Me("VideoViewerHight") = value
             End Set
         End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property DayKeogramPath() As String
+            Get
+                Return CType(Me("DayKeogramPath"),String)
+            End Get
+            Set
+                Me("DayKeogramPath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property DayKeogramMask() As String
+            Get
+                Return CType(Me("DayKeogramMask"),String)
+            End Get
+            Set
+                Me("DayKeogramMask") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property DayKeogramThumbnailPath() As String
+            Get
+                Return CType(Me("DayKeogramThumbnailPath"),String)
+            End Get
+            Set
+                Me("DayKeogramThumbnailPath") = value
+            End Set
+        End Property
+        
+        <Global.System.Configuration.UserScopedSettingAttribute(),  _
+         Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
+         Global.System.Configuration.DefaultSettingValueAttribute("")>  _
+        Public Property DayKeogramThumbnailMask() As String
+            Get
+                Return CType(Me("DayKeogramThumbnailMask"),String)
+            End Get
+            Set
+                Me("DayKeogramThumbnailMask") = value
+            End Set
+        End Property
     End Class
 End Namespace
 

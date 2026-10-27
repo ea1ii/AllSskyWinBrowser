@@ -2,6 +2,7 @@
     NightTimelapse
     DayTimelapse
     Keogram
+    DayKeogram
     Keolapse
     Startrail
     StartrailTimelapse

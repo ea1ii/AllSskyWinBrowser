@@ -55,6 +55,7 @@ base_folder
      .
 
      Keogram
+     DayKeogram
      Timelapse
      Daylapse
      Keolapse

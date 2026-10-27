@@ -114,14 +114,16 @@ Module MainModule
     ''' <param name="height"></param>
     ''' <returns></returns>
     Private Function CreateThumbnail(imagePath As String, width As Integer, height As Integer) As Bitmap
-        Using originalImage As Image = Image.FromFile(imagePath)
-            Dim thumbnail As New Bitmap(width, height)
-            Using g As Graphics = Graphics.FromImage(thumbnail)
-                g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
-                g.DrawImage(originalImage, 0, 0, width, height)
+        If Not IsNothing(imagePath) AndAlso IO.File.Exists(imagePath) Then
+            Using originalImage As Image = Image.FromFile(imagePath)
+                Dim thumbnail As New Bitmap(width, height)
+                Using g As Graphics = Graphics.FromImage(thumbnail)
+                    g.InterpolationMode = Drawing2D.InterpolationMode.HighQualityBicubic
+                    g.DrawImage(originalImage, 0, 0, width, height)
+                End Using
+                Return thumbnail
             End Using
-            Return thumbnail
-        End Using
+        End If
     End Function
 
     ''' <summary>
@@ -275,6 +277,40 @@ Module MainModule
             End If
 #End Region
 
+#Region "Day Keogram"
+            'day keogram
+            filePath = CombinePaths(cfg.FullDayKeogramPath.Replace("[D]", dayfolder), cfg.DayKeogramMask.Replace("[D]", dayfolder))
+            fileThumbPath = CombinePaths(cfg.FullDayKeogramThumbnailPath.Replace("[D]", dayfolder), cfg.DayKeogramThumbnailMask.Replace("[D]", dayfolder))
+            If IO.File.Exists(filePath) Then
+                If IO.File.Exists(fileThumbPath) Then
+                    thumbPath = fileThumbPath
+                Else
+                    If Not cfg.ThumbnailCreate Then
+                        thumbPath = ""
+                    Else
+                        'thumbnail does Not exist, create it
+                        Dim thumbnail As Bitmap = CreateThumbnail(cfg.FullDayKeogramPath, cfg.ThumbnailWidth, cfg.ThumbnailHeight)
+                        thumbnail.Save(cfg.FullDayKeogramThumbnailPath)
+                    End If
+                End If
+                Dim dayKeogramNode As New VideoImageNode() With {
+                        .VideoImage = IO.Path.GetFileName(filePath),
+                        .VideoImagePath = filePath,
+                        .VideoImageThumbnailPath = thumbPath,
+                        .Q = 0,
+                        .Type = VideoImageType.DayKeogram,
+                        .ItemType = VideoImageType.DayKeogram.ToString(),
+                        .DateTime = d.ToString(cfg.DatetimeFormat)
+                    }
+                dayNode.AddChild(dayKeogramNode)
+                Dim scoreId As String = $"{year}-{month}-{day}-{dayKeogramNode.Type}"
+                If Not ScoreManager.Scores.Items.ContainsKey(scoreId) Then
+                    ScoreManager.Scores.Items(scoreId) = New ScoreEntry With {.Score = ScoreType.Pass}
+                End If
+                validIds.Add(scoreId)
+            End If
+#End Region
+
 #Region "Keolapse"
             'keolapse
             filePath = CombinePaths(cfg.FullKeolapsePath.Replace("[D]", dayfolder), cfg.KeolapseMask.Replace("[D]", dayfolder))
@@ -318,10 +354,13 @@ Module MainModule
                         thumbPath = ""
                     Else
                         'thumbnail does Not exist, create it
-                        Dim thumbnail As Bitmap = CreateThumbnail(cfg.FullStartrailPath, cfg.ThumbnailWidth, cfg.ThumbnailHeight)
-                        thumbnail.Save(cfg.FullStartrailThumbnailPath)
+                        Dim thumbnail As Bitmap = CreateThumbnail(filePath, cfg.ThumbnailWidth, cfg.ThumbnailHeight)
+                        If Not IO.Path.Exists(IO.Path.GetDirectoryName(fileThumbPath)) Then
+                            Directory.CreateDirectory(IO.Path.GetDirectoryName(fileThumbPath))
+                        End If
+                        thumbnail.Save(fileThumbPath)
+                        End If
                     End If
-                End If
                 Dim startrailNode As New VideoImageNode() With {
                         .VideoImage = IO.Path.GetFileName(filePath),
                         .VideoImagePath = filePath,

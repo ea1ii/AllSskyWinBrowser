@@ -131,6 +131,15 @@ Partial Class frmConfig
         Label40 = New Label()
         Label36 = New Label()
         chkbThumbnailCreate = New CheckBox()
+        GroupBox12 = New GroupBox()
+        txtbDayKeogramThumbnailMask = New TextBox()
+        Label42 = New Label()
+        txtbDayKeogramThumbnailPath = New TextBox()
+        Label43 = New Label()
+        txtbDayKeogramMask = New TextBox()
+        Label44 = New Label()
+        txtbDayKeogramPath = New TextBox()
+        Label45 = New Label()
         Panel1.SuspendLayout()
         GroupBox1.SuspendLayout()
         GroupBox2.SuspendLayout()
@@ -149,6 +158,7 @@ Partial Class frmConfig
         TabPage5.SuspendLayout()
         GroupBox10.SuspendLayout()
         GroupBox11.SuspendLayout()
+        GroupBox12.SuspendLayout()
         SuspendLayout()
         ' 
         ' Panel1
@@ -158,7 +168,7 @@ Partial Class frmConfig
         Panel1.AutoSizeMode = AutoSizeMode.GrowAndShrink
         Panel1.Controls.Add(btnCancel)
         Panel1.Controls.Add(btnAcept)
-        Panel1.Location = New Point(559, 558)
+        Panel1.Location = New Point(560, 743)
         Panel1.Name = "Panel1"
         Panel1.Size = New Size(116, 104)
         Panel1.TabIndex = 0
@@ -258,7 +268,7 @@ Partial Class frmConfig
         GroupBox2.Controls.Add(Label2)
         GroupBox2.Location = New Point(12, 139)
         GroupBox2.Name = "GroupBox2"
-        GroupBox2.Size = New Size(439, 527)
+        GroupBox2.Size = New Size(439, 712)
         GroupBox2.TabIndex = 4
         GroupBox2.TabStop = False
         GroupBox2.Text = "File paths"
@@ -271,10 +281,10 @@ Partial Class frmConfig
         TabControl1.Controls.Add(TabPage3)
         TabControl1.Controls.Add(TabPage4)
         TabControl1.Controls.Add(TabPage5)
-        TabControl1.Location = New Point(5, 105)
+        TabControl1.Location = New Point(6, 104)
         TabControl1.Name = "TabControl1"
         TabControl1.SelectedIndex = 0
-        TabControl1.Size = New Size(427, 418)
+        TabControl1.Size = New Size(427, 603)
         TabControl1.TabIndex = 5
         ' 
         ' TabPage1
@@ -465,12 +475,13 @@ Partial Class frmConfig
         ' 
         ' TabPage2
         ' 
+        TabPage2.Controls.Add(GroupBox12)
         TabPage2.Controls.Add(GroupBox6)
         TabPage2.Controls.Add(GroupBox5)
         TabPage2.Location = New Point(4, 34)
         TabPage2.Name = "TabPage2"
         TabPage2.Padding = New Padding(3)
-        TabPage2.Size = New Size(419, 380)
+        TabPage2.Size = New Size(419, 565)
         TabPage2.TabIndex = 1
         TabPage2.Text = "Keograms"
         TabPage2.UseVisualStyleBackColor = True
@@ -1208,6 +1219,93 @@ Partial Class frmConfig
         chkbThumbnailCreate.Text = "Create"
         chkbThumbnailCreate.UseVisualStyleBackColor = True
         ' 
+        ' GroupBox12
+        ' 
+        GroupBox12.AutoSizeMode = AutoSizeMode.GrowAndShrink
+        GroupBox12.Controls.Add(txtbDayKeogramThumbnailMask)
+        GroupBox12.Controls.Add(Label42)
+        GroupBox12.Controls.Add(txtbDayKeogramThumbnailPath)
+        GroupBox12.Controls.Add(Label43)
+        GroupBox12.Controls.Add(txtbDayKeogramMask)
+        GroupBox12.Controls.Add(Label44)
+        GroupBox12.Controls.Add(txtbDayKeogramPath)
+        GroupBox12.Controls.Add(Label45)
+        GroupBox12.Dock = DockStyle.Top
+        GroupBox12.Location = New Point(3, 377)
+        GroupBox12.Name = "GroupBox12"
+        GroupBox12.Size = New Size(413, 187)
+        GroupBox12.TabIndex = 7
+        GroupBox12.TabStop = False
+        GroupBox12.Text = "Day Keogram"
+        ' 
+        ' txtbDayKeogramThumbnailMask
+        ' 
+        txtbDayKeogramThumbnailMask.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        txtbDayKeogramThumbnailMask.Location = New Point(131, 141)
+        txtbDayKeogramThumbnailMask.Name = "txtbDayKeogramThumbnailMask"
+        txtbDayKeogramThumbnailMask.Size = New Size(183, 31)
+        txtbDayKeogramThumbnailMask.TabIndex = 2
+        ' 
+        ' Label42
+        ' 
+        Label42.AutoSize = True
+        Label42.Location = New Point(6, 144)
+        Label42.Name = "Label42"
+        Label42.Size = New Size(119, 25)
+        Label42.TabIndex = 1
+        Label42.Text = "Thumb. mask"
+        ' 
+        ' txtbDayKeogramThumbnailPath
+        ' 
+        txtbDayKeogramThumbnailPath.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        txtbDayKeogramThumbnailPath.Location = New Point(122, 104)
+        txtbDayKeogramThumbnailPath.Name = "txtbDayKeogramThumbnailPath"
+        txtbDayKeogramThumbnailPath.Size = New Size(285, 31)
+        txtbDayKeogramThumbnailPath.TabIndex = 2
+        ' 
+        ' Label43
+        ' 
+        Label43.AutoSize = True
+        Label43.Location = New Point(3, 107)
+        Label43.Name = "Label43"
+        Label43.Size = New Size(113, 25)
+        Label43.TabIndex = 1
+        Label43.Text = "Thumb. path"
+        ' 
+        ' txtbDayKeogramMask
+        ' 
+        txtbDayKeogramMask.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        txtbDayKeogramMask.Location = New Point(97, 67)
+        txtbDayKeogramMask.Name = "txtbDayKeogramMask"
+        txtbDayKeogramMask.Size = New Size(217, 31)
+        txtbDayKeogramMask.TabIndex = 2
+        ' 
+        ' Label44
+        ' 
+        Label44.AutoSize = True
+        Label44.Location = New Point(6, 70)
+        Label44.Name = "Label44"
+        Label44.Size = New Size(85, 25)
+        Label44.TabIndex = 1
+        Label44.Text = "File mask"
+        ' 
+        ' txtbDayKeogramPath
+        ' 
+        txtbDayKeogramPath.Anchor = AnchorStyles.Top Or AnchorStyles.Left Or AnchorStyles.Right
+        txtbDayKeogramPath.Location = New Point(58, 30)
+        txtbDayKeogramPath.Name = "txtbDayKeogramPath"
+        txtbDayKeogramPath.Size = New Size(349, 31)
+        txtbDayKeogramPath.TabIndex = 2
+        ' 
+        ' Label45
+        ' 
+        Label45.AutoSize = True
+        Label45.Location = New Point(6, 33)
+        Label45.Name = "Label45"
+        Label45.Size = New Size(46, 25)
+        Label45.TabIndex = 1
+        Label45.Text = "Path"
+        ' 
         ' frmConfig
         ' 
         AcceptButton = btnAcept
@@ -1216,7 +1314,7 @@ Partial Class frmConfig
         AutoSize = True
         AutoSizeMode = AutoSizeMode.GrowAndShrink
         CancelButton = btnCancel
-        ClientSize = New Size(692, 674)
+        ClientSize = New Size(693, 859)
         Controls.Add(GroupBox11)
         Controls.Add(GroupBox10)
         Controls.Add(GroupBox2)
@@ -1255,6 +1353,8 @@ Partial Class frmConfig
         GroupBox10.PerformLayout()
         GroupBox11.ResumeLayout(False)
         GroupBox11.PerformLayout()
+        GroupBox12.ResumeLayout(False)
+        GroupBox12.PerformLayout()
         ResumeLayout(False)
         PerformLayout()
     End Sub
@@ -1368,4 +1468,13 @@ Partial Class frmConfig
     Friend WithEvents chkbThumbnailCreate As CheckBox
     Friend WithEvents txtbThumbnailHeight As TextBox
     Friend WithEvents txtbThumbnailWidth As TextBox
+    Friend WithEvents GroupBox12 As GroupBox
+    Friend WithEvents txtbDayKeogramThumbnailMask As TextBox
+    Friend WithEvents Label42 As Label
+    Friend WithEvents txtbDayKeogramThumbnailPath As TextBox
+    Friend WithEvents Label43 As Label
+    Friend WithEvents txtbDayKeogramMask As TextBox
+    Friend WithEvents Label44 As Label
+    Friend WithEvents txtbDayKeogramPath As TextBox
+    Friend WithEvents Label45 As Label
 End Class
