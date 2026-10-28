@@ -45,6 +45,7 @@ Partial Class Form1
         Panel4 = New Panel()
         Panel2 = New Panel()
         tlpHeader = New TableLayoutPanel()
+        ImageList2 = New ImageList(components)
         StatusStrip1.SuspendLayout()
         ToolStrip1.SuspendLayout()
         Panel1.SuspendLayout()
@@ -257,6 +258,14 @@ Partial Class Form1
         tlpHeader.Size = New Size(2121, 65)
         tlpHeader.TabIndex = 0
         ' 
+        ' ImageList2
+        ' 
+        ImageList2.ColorDepth = ColorDepth.Depth32Bit
+        ImageList2.ImageStream = CType(resources.GetObject("ImageList2.ImageStream"), ImageListStreamer)
+        ImageList2.TransparentColor = Color.Transparent
+        ImageList2.Images.SetKeyName(0, "Image")
+        ImageList2.Images.SetKeyName(1, "Video")
+        ' 
         ' Form1
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
@@ -302,6 +311,7 @@ Partial Class Form1
     Friend WithEvents tsslblCountNice As ToolStripStatusLabel
     Friend WithEvents tsslblCountCool As ToolStripStatusLabel
     Friend WithEvents tsbPurge As ToolStripButton
+    Friend WithEvents ImageList2 As ImageList
 
 End Class
 

@@ -150,6 +150,14 @@ End Class
 ''' Represents an individual score entry, containing the score value and the last updated timestamp.
 ''' </summary>
 Public Class ScoreEntry
+    ''' <summary>
+    ''' Gets or sets the score value for the entry. The score is represented by the ScoreType enumeration, which defines different levels of scores (Crap, Pass, Nice, Cool).
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Score As ScoreType
+    ''' <summary>
+    ''' Gets or sets the timestamp indicating when the score entry was last updated. This property is used to track changes to the score over time.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property LastUpdated As DateTime
 End Class

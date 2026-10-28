@@ -63,10 +63,20 @@ Public Class ImageViewer
         End If
     End Sub
 
+    ''' <summary>
+    ''' Reset the coordinates label when the mouse leaves the canvas area.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub canvas_MouseLeave(sender As Object, e As EventArgs)
         tsslblCoords.Text = "(X:-- , Y:--)"
     End Sub
 
+    ''' <summary>
+    ''' Handle mouse wheel events to zoom in or out of the image at the mouse cursor's position.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub canvas_MouseWheel(sender As Object, e As MouseEventArgs) Handles canvas.MouseWheel
         Dim delta As Single = If(e.Delta > 0, 1.1F, 1 / 1.1F)
         ZoomAtPoint(canvas, delta, New PointF(e.X, e.Y))
@@ -75,11 +85,21 @@ Public Class ImageViewer
     Private dragging As Boolean = False
     Private lastPos As Point
 
+    ''' <summary>
+    ''' Handle mouse down events to initiate dragging of the image.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub canvas_MouseDown(sender As Object, e As MouseEventArgs) Handles canvas.MouseDown
         dragging = True
         lastPos = e.Location
     End Sub
 
+    ''' <summary>
+    ''' Handle mouse move events to either drag the image or update the coordinates label based on the mouse position.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub canvas_MouseMove(sender As Object, e As MouseEventArgs) Handles canvas.MouseMove
         If dragging Then
             canvas.Offset = New Point(
@@ -98,42 +118,89 @@ Public Class ImageViewer
         End If
     End Sub
 
+    ''' <summary>
+    ''' Convert a point from screen coordinates to image coordinates based on the current zoom and offset of the canvas.
+    ''' </summary>
+    ''' <param name="canvas"></param>
+    ''' <param name="screenPoint"></param>
+    ''' <returns></returns>
     Private Function ScreenToImage(canvas As SmoothImageViewer, screenPoint As Point) As Point
         Dim imgX = (screenPoint.X - canvas.Offset.X) / canvas.Zoom
         Dim imgY = (screenPoint.Y - canvas.Offset.Y) / canvas.Zoom
         Return New Point(CInt(imgX), CInt(imgY))
     End Function
 
+    ''' <summary>
+    ''' Handle mouse up events to stop dragging the image.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub canvas_MouseUp(sender As Object, e As MouseEventArgs) Handles canvas.MouseUp
         dragging = False
     End Sub
 
+    ''' <summary>
+    ''' Handle the exit button click event to close the image viewer form.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub tsbExit_Click(sender As Object, e As EventArgs) Handles tsbExit.Click
         Me.Close()
     End Sub
 
+    ''' <summary>
+    ''' Handle the zoom in button click event to zoom in on the image at the center of the canvas.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub tsbZoomIn_Click(sender As Object, e As EventArgs) Handles tsbZoomIn.Click
         ZoomAtCenter(canvas, 1.25F)
     End Sub
 
+    ''' <summary>
+    ''' Handle the zoom out button click event to zoom out of the image at the center of the canvas.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub tsbZoomOut_Click(sender As Object, e As EventArgs) Handles tsbZoomOut.Click
         ZoomAtCenter(canvas, 1 / 1.25F)
     End Sub
 
+    ''' <summary>
+    ''' Handle the zoom actual size button click event to reset the zoom level to 1.0 (actual size).
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub tsbZoomActual_Click(sender As Object, e As EventArgs) Handles tsbZoomActual.Click
         canvas.Zoom = 1.0
     End Sub
 
+    ''' <summary>
+    ''' Handle the zoom to fit button click event to adjust the zoom level so that the entire image fits within the canvas.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub tsbZoomReset_Click(sender As Object, e As EventArgs) Handles tsbZoomReset.Click
         canvas.ZoomToFit()
     End Sub
 
+    ''' <summary>
+    ''' Handle key down events to close the image viewer form when the Escape key is pressed.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ImageViewer_KeyDown(sender As Object, e As KeyEventArgs) Handles MyBase.KeyDown
         If e.KeyCode = Keys.Escape Then
             Me.Close()
         End If
     End Sub
 
+    ''' <summary>
+    ''' Zoom the image at a specific point on the canvas by adjusting the zoom level and offset to keep the specified point visually fixed.
+    ''' </summary>
+    ''' <param name="canvas"></param>
+    ''' <param name="zoomDelta"></param>
+    ''' <param name="zoomPoint"></param>
     Private Sub ZoomAtPoint(canvas As SmoothImageViewer, zoomDelta As Single, zoomPoint As PointF)
         Dim oldZoom = canvas.Zoom
         Dim newZoom = oldZoom * zoomDelta
@@ -147,11 +214,21 @@ Public Class ImageViewer
     )
     End Sub
 
+    ''' <summary>
+    ''' Zoom the image at the center of the canvas by calling ZoomAtPoint with the center point of the canvas.
+    ''' </summary>
+    ''' <param name="canvas"></param>
+    ''' <param name="zoomDelta"></param>
     Private Sub ZoomAtCenter(canvas As SmoothImageViewer, zoomDelta As Single)
         Dim center As New PointF(canvas.Width / 2, canvas.Height / 2)
         ZoomAtPoint(canvas, zoomDelta, center)
     End Sub
 
+    ''' <summary>
+    ''' Clamp the form's location to ensure it stays within the bounds of the screen's working area, preventing it from being positioned off-screen.
+    ''' </summary>
+    ''' <param name="p"></param>
+    ''' <returns></returns>
     Private Function ClampToScreen(p As Point) As Point
         Dim screen = System.Windows.Forms.Screen.FromPoint(p).WorkingArea
         Dim x = Math.Max(screen.Left, Math.Min(p.X, screen.Right - Me.Width))
@@ -159,6 +236,11 @@ Public Class ImageViewer
         Return New Point(x, y)
     End Function
 
+    ''' <summary>
+    ''' Handle the form's Load event to restore the form's size and position from the application settings, ensuring it opens in the same state as when it was last closed.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ImageViewer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Me.Width = My.Settings.ImageViewerWidth
         Me.Height = My.Settings.ImageViewerHeight
@@ -166,6 +248,11 @@ Public Class ImageViewer
         Me.Location = ClampToScreen(New Point(My.Settings.ImageViewerX, My.Settings.ImageViewerY))
     End Sub
 
+    ''' <summary>
+    ''' Handle the form's FormClosing event to save the current size and position of the form to the application settings, allowing it to be restored the next time the form is opened.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub ImageViewer_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         My.Settings.ImageViewerHeight = Me.Height
         My.Settings.ImageViewerWidth = Me.Width
@@ -174,6 +261,11 @@ Public Class ImageViewer
         My.Settings.Save()
     End Sub
 
+    ''' <summary>
+    ''' Handle the meteor button click event to cycle through the detected meteors in the image, zooming in on each meteor's location in sequence.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub tsbMeteor_Click(sender As Object, e As EventArgs) Handles tsbMeteor.Click
         metIdx += 1
         If metIdx >= meteorNum Then
@@ -187,6 +279,9 @@ Public Class ImageViewer
 
 End Class
 
+''' <summary>
+''' Represents a meteor point with its center, distance, and endpoints. This class is used to store information about detected meteors in an image, including their center point, the distance between two points (p1 and p2), and the coordinates of those points.
+''' </summary>
 Public Class meteorPoint
     Private _Centre As PointF
     Private _distance As Double

@@ -39,11 +39,13 @@ Partial Class sandbox
         Label4 = New Label()
         PictureBox1 = New PictureBox()
         PictureBox2 = New PictureBox()
+        PictureBox3 = New PictureBox()
         TableLayoutPanel1.SuspendLayout()
         FlowLayoutPanel1.SuspendLayout()
         FlowLayoutPanel2.SuspendLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).BeginInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).BeginInit()
+        CType(PictureBox3, ComponentModel.ISupportInitialize).BeginInit()
         SuspendLayout()
         ' 
         ' TableLayoutPanel1
@@ -61,7 +63,7 @@ Partial Class sandbox
         TableLayoutPanel1.RowCount = 2
         TableLayoutPanel1.RowStyles.Add(New RowStyle())
         TableLayoutPanel1.RowStyles.Add(New RowStyle())
-        TableLayoutPanel1.Size = New Size(930, 546)
+        TableLayoutPanel1.Size = New Size(347, 355)
         TableLayoutPanel1.TabIndex = 1
         ' 
         ' FlowLayoutPanel1
@@ -74,7 +76,7 @@ Partial Class sandbox
         FlowLayoutPanel1.Dock = DockStyle.Fill
         FlowLayoutPanel1.Location = New Point(57, 245)
         FlowLayoutPanel1.Name = "FlowLayoutPanel1"
-        FlowLayoutPanel1.Size = New Size(870, 316)
+        FlowLayoutPanel1.Size = New Size(287, 316)
         FlowLayoutPanel1.TabIndex = 0
         ' 
         ' Label5
@@ -116,7 +118,7 @@ Partial Class sandbox
         ' Label9
         ' 
         Label9.AutoSize = True
-        Label9.Location = New Point(279, 0)
+        Label9.Location = New Point(3, 25)
         Label9.Name = "Label9"
         Label9.Size = New Size(63, 25)
         Label9.TabIndex = 4
@@ -131,7 +133,7 @@ Partial Class sandbox
         FlowLayoutPanel2.Dock = DockStyle.Fill
         FlowLayoutPanel2.Location = New Point(57, 3)
         FlowLayoutPanel2.Name = "FlowLayoutPanel2"
-        FlowLayoutPanel2.Size = New Size(870, 236)
+        FlowLayoutPanel2.Size = New Size(287, 236)
         FlowLayoutPanel2.TabIndex = 1
         ' 
         ' Label1
@@ -192,11 +194,22 @@ Partial Class sandbox
         PictureBox2.TabIndex = 3
         PictureBox2.TabStop = False
         ' 
+        ' PictureBox3
+        ' 
+        PictureBox3.Image = CType(resources.GetObject("PictureBox3.Image"), Image)
+        PictureBox3.Location = New Point(658, 88)
+        PictureBox3.Name = "PictureBox3"
+        PictureBox3.Size = New Size(512, 512)
+        PictureBox3.SizeMode = PictureBoxSizeMode.AutoSize
+        PictureBox3.TabIndex = 2
+        PictureBox3.TabStop = False
+        ' 
         ' sandbox
         ' 
         AutoScaleDimensions = New SizeF(10F, 25F)
         AutoScaleMode = AutoScaleMode.Font
-        ClientSize = New Size(1277, 856)
+        ClientSize = New Size(1734, 1186)
+        Controls.Add(PictureBox3)
         Controls.Add(TableLayoutPanel1)
         Name = "sandbox"
         Text = "sandbox"
@@ -207,7 +220,9 @@ Partial Class sandbox
         FlowLayoutPanel2.PerformLayout()
         CType(PictureBox1, ComponentModel.ISupportInitialize).EndInit()
         CType(PictureBox2, ComponentModel.ISupportInitialize).EndInit()
+        CType(PictureBox3, ComponentModel.ISupportInitialize).EndInit()
         ResumeLayout(False)
+        PerformLayout()
     End Sub
     Friend WithEvents ToolTip1 As ToolTip
     Friend WithEvents TableLayoutPanel1 As TableLayoutPanel
@@ -224,4 +239,5 @@ Partial Class sandbox
     Friend WithEvents Label4 As Label
     Friend WithEvents PictureBox1 As PictureBox
     Friend WithEvents PictureBox2 As PictureBox
+    Friend WithEvents PictureBox3 As PictureBox
 End Class

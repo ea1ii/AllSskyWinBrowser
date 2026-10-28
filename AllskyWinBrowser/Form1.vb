@@ -10,19 +10,30 @@ Partial Class Form1
         InitializeComponent()
     End Sub
 
-    ' This constructor is used when you want to pass a SettingsSnapshot object to the form.
+    ''' <summary>
+    ''' This constructor is used when you want to create the form and pass a SettingsSnapshot object. It initializes the form and sets the _cfg field to the provided SettingsSnapshot object.
+    ''' </summary>
+    ''' <param name="cfg"></param>
     Public Sub New(cfg As SettingsSnapshot)
         Me.New()
         _cfg = cfg
 
     End Sub
 
-    ' This method is called when the form is loaded. It initializes the form and sets up any necessary configurations.
+    ''' <summary>
+    ''' Handles the click event of the "Exit" button in the toolstrip. It closes the application when the button is clicked.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub tsbExit_Click(sender As Object, e As EventArgs) Handles tsbExit.Click
         Application.Exit()
     End Sub
 
-    ' This method is called when the "Setup" button is clicked. It opens a configuration dialog and saves the settings if the user clicks OK.
+    ''' <summary>
+    ''' Handles the click event of the "Setup" button in the toolstrip. It opens a configuration dialog (frmConfig) to allow the user to modify settings. If the user clicks "OK" in the dialog, it calculates derived settings and saves the configuration.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub tsbSetup_Click(sender As Object, e As EventArgs) Handles tsbSetup.Click
         Dim ConfigDialog As New frmConfig(_cfg)
 
@@ -265,12 +276,23 @@ Partial Class Form1
             Next
         Next
 
-        'Panel4.Enabled = True
-        'TableLayoutPanel1.Enabled = True
         TableLayoutPanel1.ResumeLayout()
+
+        ReAdjustHeader()
+
         tstlblDaysCount.Text = $"Days: {TableLayoutPanel1.RowCount - 1}"
 
         UpdateScoresCount()
+    End Sub
+
+    Private Sub ReAdjustHeader()
+        tlpHeader.SuspendLayout()
+        For i As Integer = 0 To TableLayoutPanel1.ColumnCount - 1
+            Dim ws = TableLayoutPanel1.GetColumnWidths()
+            tlpHeader.ColumnStyles(i).SizeType = SizeType.Absolute
+            tlpHeader.ColumnStyles(i).Width = ws(i)
+        Next
+        tlpHeader.ResumeLayout()
     End Sub
 
     ''' <summary>
@@ -562,7 +584,7 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If nightTimeLapseNode IsNot Nothing Then
                 Dim data = DirectCast(nightTimeLapseNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.CenterImage
+                pic.SizeMode = PictureBoxSizeMode.AutoSize
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
@@ -571,7 +593,7 @@ Partial Class Form1
                         End Using
                     End Using
                 Else
-                    pic.Image = ImageList1.Images("Video")
+                    pic.Image = ImageList2.Images("Video")
                 End If
                 pic.Tag = New PicTag With {
                     .Path = data.VideoImagePath,
@@ -589,7 +611,7 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If dayTimelapseNode IsNot Nothing Then
                 Dim data = DirectCast(dayTimelapseNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.CenterImage
+                pic.SizeMode = PictureBoxSizeMode.AutoSize
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
@@ -598,7 +620,7 @@ Partial Class Form1
                         End Using
                     End Using
                 Else
-                    pic.Image = ImageList1.Images("Video")
+                    pic.Image = ImageList2.Images("Video")
                 End If
                 pic.Tag = New PicTag With {
                     .Path = data.VideoImagePath,
@@ -616,7 +638,7 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If keogramNode IsNot Nothing Then
                 Dim data = DirectCast(keogramNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.CenterImage
+                pic.SizeMode = PictureBoxSizeMode.AutoSize
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
@@ -625,7 +647,7 @@ Partial Class Form1
                         End Using
                     End Using
                 Else
-                    pic.Image = ImageList1.Images("Image")
+                    pic.Image = ImageList2.Images("Image")
                 End If
                 pic.Tag = New PicTag With {
                     .Path = data.VideoImagePath,
@@ -643,7 +665,7 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If dayKeogramNode IsNot Nothing Then
                 Dim data = DirectCast(dayKeogramNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.CenterImage
+                pic.SizeMode = PictureBoxSizeMode.AutoSize
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
@@ -652,7 +674,7 @@ Partial Class Form1
                         End Using
                     End Using
                 Else
-                    pic.Image = ImageList1.Images("Image")
+                    pic.Image = ImageList2.Images("Image")
                 End If
                 pic.Tag = New PicTag With {
                     .Path = data.VideoImagePath,
@@ -670,7 +692,7 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If keolapseNode IsNot Nothing Then
                 Dim data = DirectCast(keolapseNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.CenterImage
+                pic.SizeMode = PictureBoxSizeMode.AutoSize
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
@@ -679,7 +701,7 @@ Partial Class Form1
                         End Using
                     End Using
                 Else
-                    pic.Image = ImageList1.Images("Video")
+                    pic.Image = ImageList2.Images("Video")
                 End If
                 pic.Tag = New PicTag With {
                     .Path = data.VideoImagePath,
@@ -697,7 +719,7 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If startrailNode IsNot Nothing Then
                 Dim data = DirectCast(startrailNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.CenterImage
+                pic.SizeMode = PictureBoxSizeMode.AutoSize
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
@@ -706,7 +728,7 @@ Partial Class Form1
                         End Using
                     End Using
                 Else
-                    pic.Image = ImageList1.Images("Image")
+                    pic.Image = ImageList2.Images("Image")
                 End If
                 pic.Tag = New PicTag With {
                     .Path = data.VideoImagePath,
@@ -724,7 +746,7 @@ Partial Class Form1
             AddHandler pic.Paint, AddressOf PictureBox_PaintScoreOverlay
             If starlapseNode IsNot Nothing Then
                 Dim data = DirectCast(starlapseNode.Data, VideoImageNode)
-                pic.SizeMode = PictureBoxSizeMode.CenterImage
+                pic.SizeMode = PictureBoxSizeMode.AutoSize
                 If data.VideoImageThumbnailExists Then
                     'pic.Image = Image.FromFile(data.VideoImageThumbnailPath)
                     Using fs As New System.IO.FileStream(data.VideoImageThumbnailPath, IO.FileMode.Open, IO.FileAccess.Read)
@@ -733,7 +755,7 @@ Partial Class Form1
                         End Using
                     End Using
                 Else
-                    pic.Image = ImageList1.Images("Video")
+                    pic.Image = ImageList2.Images("Video")
                 End If
                 pic.Tag = New PicTag With {
                     .Path = data.VideoImagePath,
@@ -765,7 +787,7 @@ Partial Class Form1
                         End Using
                     End Using
                 Else
-                    pic.Image = ImageList1.Images("Image")
+                    pic.Image = ImageList2.Images("Image")
                 End If
                 pic.Tag = New PicTag With {
                     .Path = data.RecapImagePath,
@@ -1001,6 +1023,11 @@ Partial Class Form1
         ToolStripProgressBar1.Visible = False
     End Sub
 
+    ''' <summary>
+    ''' Handles the FormClosing event of the form. It saves the scores managed by the ScoreManager before the form is closed, ensuring that any changes made to the scores during the application's runtime are persisted.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         ScoreManager.SaveScores()
     End Sub
@@ -1103,6 +1130,11 @@ Partial Class Form1
         tsslblCountCool.Text = $"Cool: {ScoreManager.CountScore(ScoreType.Cool)}"
     End Sub
 
+    ''' <summary>
+    ''' Handles the click event of the tsbPurge ToolStripButton. It calls the PurgeItems method with the ScoreType.Crap parameter to purge items with a score of "Crap" from the ScoreManager and delete associated files.
+    ''' </summary>
+    ''' <param name="sender"></param>
+    ''' <param name="e"></param>
     Private Sub tsbPurge_Click(sender As Object, e As EventArgs) Handles tsbPurge.Click
         PurgeItems(ScoreType.Crap)
     End Sub
@@ -1244,13 +1276,35 @@ Partial Class Form1
 
 End Class
 
+''' <summary>
+''' Represents a tag for a PictureBox control in the grid, containing the path to the associated video/image and the item ID used for score management. This class is used to store metadata for each PictureBox, allowing for easy retrieval of the associated data when handling events such as clicks or paint operations.
+''' </summary>
 Public Class PicTag
+    ''' <summary>
+    ''' Gets or sets the path to the associated video/image for the PictureBox. This property allows access to the file path of the video/image represented by the PictureBox, enabling event handlers to perform actions such as opening or playing the media when the PictureBox is interacted with.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property Path As String
+    ''' <summary>
+    ''' Gets or sets the item ID associated with the PictureBox. This property is used for score management, allowing event handlers to retrieve and update the score for the specific video/image represented by the PictureBox.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property ItemId As String
 End Class
 
+''' <summary>
+''' Represents a tag for a meteor PictureBox control in the grid, containing the associated MeteorNode and the item ID used for score management. This class is used to store metadata for each meteor PictureBox, allowing for easy retrieval of the associated data when handling events such as clicks or paint operations.
+''' </summary>
 Public Class MeteorTag
+    ''' <summary>
+    ''' Gets or sets the associated MeteorNode for the meteor PictureBox. This property allows access to the meteor data, including paths to images and metadata, enabling event handlers to perform actions based on the specific meteor represented by the PictureBox.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property MeteorNode As MeteorNode
+    ''' <summary>
+    ''' Gets or sets the item ID associated with the meteor PictureBox. This property is used for score management, allowing event handlers to retrieve and update the score for the specific meteor represented by the PictureBox.
+    ''' </summary>
+    ''' <returns></returns>
     Public Property ItemId As String
 End Class
 
