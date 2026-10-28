@@ -1113,6 +1113,7 @@ Partial Class Form1
     ''' <param name="scoreType"></param>
     Private Sub PurgeItems(scoreType As ScoreType)
         Dim itemsToPurge = ScoreManager.GetItemsByScore(scoreType)
+        Dim thDone As Boolean
 
         If itemsToPurge.Count = 0 Then
             MessageBox.Show($"No items with score '{scoreType}' to purge.", "Purge Items", MessageBoxButtons.OK, MessageBoxIcon.Information)
@@ -1137,37 +1138,49 @@ Partial Class Form1
                         dateTimeString = dt.ToString(_cfg.DatetimeFormat) '"yyyyMMddHHmmss")
                         Dim node As vTreeNode = FindNode(allSkyTree.Root, dateTimeString, suffix)
                         Dim meteorNode As MeteorNode = node.Data
+                        thDone = False
                         If meteorNode IsNot Nothing Then
                             If IO.File.Exists(meteorNode.MeteorImageThumbnailPath) Then
                                 Try
                                     IO.File.Delete(meteorNode.MeteorImageThumbnailPath)
+                                    thDone = True
                                 Catch ex As Exception
                                     MsgBox($"Error: Could not delete {meteorNode.MeteorImageThumbnailPath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
                                 End Try
+                            Else
+                                thDone = True
                             End If
 
-                            If IO.File.Exists(meteorNode.MeteorImagePath) Then
-                                Try
-                                    IO.File.Delete(meteorNode.MeteorImagePath)
-                                Catch ex As Exception
-                                    MsgBox($"Error: Could not delete {meteorNode.MeteorImagePath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
-                                End Try
+                            If thDone Then
+                                If IO.File.Exists(meteorNode.MeteorImagePath) Then
+                                    Try
+                                        IO.File.Delete(meteorNode.MeteorImagePath)
+                                    Catch ex As Exception
+                                        MsgBox($"Error: Could not delete {meteorNode.MeteorImagePath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
+                                    End Try
+                                End If
                             End If
 
+                            thDone = False
                             If IO.File.Exists(meteorNode.MeteorMarkedImageThumbnailPath) Then
                                 Try
                                     IO.File.Delete(meteorNode.MeteorMarkedImageThumbnailPath)
+                                    thDone = True
                                 Catch ex As Exception
                                     MsgBox($"Error: Could not delete {meteorNode.MeteorMarkedImageThumbnailPath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
                                 End Try
+                            Else
+                                thDone = True
                             End If
 
-                            If IO.File.Exists(meteorNode.MeteorMarkedImagePath) Then
-                                Try
-                                    IO.File.Delete(meteorNode.MeteorMarkedImagePath)
-                                Catch ex As Exception
-                                    MsgBox($"Error: Could not delete {meteorNode.MeteorMarkedImagePath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
-                                End Try
+                            If thDone Then
+                                If IO.File.Exists(meteorNode.MeteorMarkedImagePath) Then
+                                    Try
+                                        IO.File.Delete(meteorNode.MeteorMarkedImagePath)
+                                    Catch ex As Exception
+                                        MsgBox($"Error: Could not delete {meteorNode.MeteorMarkedImagePath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
+                                    End Try
+                                End If
                             End If
 
                             If IO.File.Exists(meteorNode.MeteorMetadataPath) Then
@@ -1183,28 +1196,35 @@ Partial Class Form1
                         dt = DateTime.ParseExact(baseName, "yyyy-MM-dd", System.Globalization.CultureInfo.InvariantCulture)
                         dateTimeString = dt.ToString(_cfg.DateFormat) '"yyyyMMdd")
                         Dim node As vTreeNode = FindNode(allSkyTree.Root, dateTimeString, suffix)
+                        thDone = False
                         If suffix = "Recap" Then
                             Dim nodeRecap As RecapNode = node.Data
+                            'TODO: recap pending here
                         Else
                             Dim nodeVideoImage As VideoImageNode = node.Data
                             If nodeVideoImage IsNot Nothing Then
                                 If IO.File.Exists(nodeVideoImage.VideoImageThumbnailPath) Then
                                     Try
                                         IO.File.Delete(nodeVideoImage.VideoImageThumbnailPath)
+                                        thDone = True
                                     Catch ex As Exception
                                         MsgBox($"Error: Could not delete {nodeVideoImage.VideoImageThumbnailPath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
                                     End Try
+                                Else
+                                    thDone = True
                                 End If
 
-                                If IO.File.Exists(nodeVideoImage.VideoImagePath) Then
-                                    Try
-                                        IO.File.Delete(nodeVideoImage.VideoImagePath)
-                                    Catch ex As Exception
-                                        MsgBox($"Error: Could not delete {nodeVideoImage.VideoImagePath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
-                                    End Try
+                                If thDone Then
+                                    If IO.File.Exists(nodeVideoImage.VideoImagePath) Then
+                                        Try
+                                            IO.File.Delete(nodeVideoImage.VideoImagePath)
+                                        Catch ex As Exception
+                                            MsgBox($"Error: Could not delete {nodeVideoImage.VideoImagePath}", MsgBoxStyle.Exclamation & MsgBoxStyle.OkOnly)
+                                        End Try
+                                    End If
                                 End If
                             End If
-                        End If
+                            End If
                     End If
 
                 End If

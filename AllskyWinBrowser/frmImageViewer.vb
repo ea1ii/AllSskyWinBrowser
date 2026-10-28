@@ -19,7 +19,12 @@ Public Class ImageViewer
         canvas.Zoom = 1.0
         canvas.TabStop = False
 
-        canvas.ViewerImage = Image.FromFile(imagePath)
+        Using fs As New System.IO.FileStream(imagePath, IO.FileMode.Open, IO.FileAccess.Read)
+            Using tmp As Image = Image.FromStream(fs)
+                canvas.ViewerImage = New Bitmap(tmp)
+            End Using
+        End Using
+        'canvas.ViewerImage = Image.FromFile(imagePath)
 
         AddHandler canvas.MouseWheel, AddressOf canvas_MouseWheel
         AddHandler canvas.MouseDown, AddressOf canvas_MouseDown
